@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 public class Ciudad {
-
+	// prueba commit 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
