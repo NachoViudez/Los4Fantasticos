@@ -10,8 +10,15 @@
         <h1>Ejemplo Spring Boot Web Thymeleaf </h1>
         <h2>
             <span th:text="'Bienvenido'"></span>
-			<span th:text="'prueba funciando'"></span>
         </h2>
     </div>
+    
+
+    <div class="menu">
+        <a th:href="@{/provinciasBuscar}">Provincias</a>
+        <a th:href="@{/ciudadesBuscar}">Ciudades</a>
+        <a th:href="@{/personasBuscar}">Personas</a>
+    </div>
+
 </body>
 </html>
