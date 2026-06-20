@@ -84,11 +84,11 @@ public class Publicacion {
 		this.estado = estado;
 	}
 
-	public Boolean getEliminada() {
+	public Boolean getEliminado() {
 		return eliminado;
 	}
 
-	public void setEliminada(Boolean eliminado) {
+	public void setEliminado(Boolean eliminado) {
 		this.eliminado = eliminado;
 	}
 
