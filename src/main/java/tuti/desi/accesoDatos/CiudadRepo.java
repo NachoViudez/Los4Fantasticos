@@ -12,8 +12,12 @@ import tuti.desi.entidades.Ciudad;
 public interface CiudadRepo extends JpaRepository<Ciudad, Long> {
 
 	//notar que aquí debí indicarle a JPA qué query espero que genere porque no le estoy pasando como parametro la "Provincia" sino su Id
-	@Query("SELECT c FROM Ciudad c WHERE c.nombre like :nombre or c.provincia.id=:idProvinciaSeleccionada")
-	List<Ciudad> findByNombreOrIdProvincia(String nombre, Long idProvinciaSeleccionada);
+	@Query("""
+		    SELECT c FROM Ciudad c
+		    WHERE (:nombre IS NULL OR LOWER(c.nombre) LIKE LOWER(CONCAT('%', :nombre, '%')))
+		      AND (:idProvinciaSeleccionada IS NULL OR c.provincia.id = :idProvinciaSeleccionada)
+		""")
+		List<Ciudad> filter(String nombre, Long idProvinciaSeleccionada);
 	
 	@Query("SELECT c FROM Ciudad c WHERE c.nombre like :nombre and c.provincia.id=:idProvinciaSeleccionada")
 	List<Ciudad> findByNombreAndIdProvincia(String nombre, Long idProvinciaSeleccionada);
