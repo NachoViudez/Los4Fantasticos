@@ -96,6 +96,7 @@ public class PropiedadServiceImpl implements PropiedadService {
 		historial.setPropiedad(propiedad);
 		historial.setEstado(propiedad.getEstadoDisponibilidad());
 		historial.setFechaHora(LocalDateTime.now());
+		historialRepo.save(historial);
 		
 	}
 	
