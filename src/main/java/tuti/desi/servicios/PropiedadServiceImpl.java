@@ -1,9 +1,11 @@
 package tuti.desi.servicios;
 
 import java.time.LocalDateTime;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import tuti.desi.accesoDatos.ContratoRepo;
 import tuti.desi.accesoDatos.HistorialEstadoPropiedadRepo;
@@ -16,6 +18,7 @@ import tuti.desi.excepciones.EntidadNoEncontradaException;
 import tuti.desi.excepciones.Excepcion;
 import tuti.desi.presentacion.propiedades.PropiedadesBuscarForm;
 
+@Service
 public class PropiedadServiceImpl implements PropiedadService {
 	
 	@Autowired
