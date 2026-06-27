@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import tuti.desi.accesoDatos.ContratoRepo;
+import tuti.desi.accesoDatos.HistorialEstadoPropiedadRepo;
 import tuti.desi.accesoDatos.PropiedadRepo;
 import tuti.desi.entidades.Propiedad;
 import tuti.desi.excepciones.Excepcion;
@@ -13,6 +15,10 @@ public class PropiedadServiceImpl implements PropiedadService {
 	
 	@Autowired
 	PropiedadRepo pRepo;
+	@Autowired
+	HistorialEstadoPropiedadRepo historialRepo;
+	@Autowired
+	ContratoRepo contratoRepo;
 
 	@Override
 	public List<Propiedad> getAllActivas() {
