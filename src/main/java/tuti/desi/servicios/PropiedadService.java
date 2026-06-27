@@ -16,5 +16,5 @@ public interface PropiedadService {
 	
 	void guardar(Propiedad propiedad) throws Excepcion;
 	
-	void eliminarById(Long id);
+	void eliminarById(Long id)throws Excepcion;
 }

@@ -1,5 +1,9 @@
 package tuti.desi.accesoDatos;
 
-public interface HistorialEstadoPropiedadRepo {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import tuti.desi.entidades.HistorialEstadoContrato;
+
+public interface HistorialEstadoPropiedadRepo extends JpaRepository<HistorialEstadoContrato, Long> {
 
 }
