@@ -142,65 +142,65 @@
             </td>
 
         </tr>
+		        <tr>
 
-        <tr>
-			</select>
+		            <td>Estado</td>
 
-			       <input
-			               th:if="${formBean.id == null}"
-			               type="hidden"
-			               th:field="*{estado}"/>
+		            <td>
 
-			   </td>
+		                <select th:field="*{estado}">
 
-			   <td>
+							<option
+							                   th:each="e : ${allEstados}"
+							                   th:value="${e}"
+							                   th:text="${e}">
+							           </option>
 
-			       <p
-			           th:if="${#fields.hasErrors('estado')}"
-			           th:errorclass="error"
-			           th:errors="*{estado}">
-			       </p>
+							       </select>
 
-			   </td>
-		 </tr>
+							   </td>
 
-    </table>
+							   <td>
 
-    <table class="botones">
+							       <p
+							               th:if="${#fields.hasErrors('estado')}"
+							               th:errorclass="error"
+							               th:errors="*{estado}">
+							       </p>
 
-        <tr>
+							   </td>
 
-            <td>
+		        </tr>
+				
+		    </table>
 
-                <button
-                        type="submit"
-                        name="action"
-                        value="actionAceptar"
-						th:text="#{botones.aceptar}">
+		    <table class="botones">
 
+		        <tr>
 
-                </button>
+		            <td>
+		                <button
+		                        type="submit"
+		                        name="action"
+		                        value="actionAceptar"
+		                        th:text="#{botones.aceptar}">
+		                </button>
+		            </td>
 
-            </td>
+		            <td>
+		                <button
+		                        type="submit"
+		                        name="action"
+		                        value="actionCancelar"
+		                        th:text="#{botones.cancelar}">
+		                </button>
+		            </td>
 
-            <td>
+		        </tr>
 
-                <button
-                        type="submit"
-                        name="action"
-                        value="actionCancelar"
-						th:text="#{botones.cancelar}">
+		    </table>
 
+		</form>
 
-                </button>
-
-            </td>
-
-        </tr>
-
-    </table>
-
-</form>
-
-</body>
-</html>
+		</body>
+		</html>

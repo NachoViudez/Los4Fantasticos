@@ -209,19 +209,23 @@
 
         </td>
 
-        <td>
+		<td>
 
-			<button
-			        type="submit"
-			        th:formaction="@{/publicacionEditar/delete/{id}(id=${p.id})}"
-			        formmethod="post"
-			        onclick="return confirm('¿Está seguro que desea eliminar esta publicación?');">
+		    <form
+		            th:action="@{/publicacionEditar/delete/{id}(id=${p.id})}"
+		            method="post">
 
-			    Eliminar
+		        <button
+		                type="submit"
+		                onclick="return confirm('¿Está seguro que desea eliminar esta publicación?');">
 
-			</button>
+		            Eliminar
 
-        </td>
+		        </button>
+
+		    </form>
+
+		</td>
 
     </tr>
 

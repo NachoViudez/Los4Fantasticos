@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
+import tuti.desi.entidades.Ciudad;
 import tuti.desi.entidades.EstadoPublicacion;
 import tuti.desi.entidades.Propiedad;
 import tuti.desi.entidades.Publicacion;
 import tuti.desi.excepciones.Excepcion;
+import tuti.desi.servicios.CiudadService;
 import tuti.desi.servicios.PropiedadService;
 import tuti.desi.servicios.PublicacionService;
 
@@ -32,6 +34,9 @@ public class PublicacionRegistrarEditarController {
 
     @Autowired
     private PropiedadService servicioPropiedad;
+    
+    @Autowired
+    private CiudadService servicioCiudad;
 
     @RequestMapping(path = {"", "/{id}"}, method = RequestMethod.GET)
     public String preparaForm(Model modelo,
@@ -62,6 +67,11 @@ public class PublicacionRegistrarEditarController {
     @ModelAttribute("allEstados")
     public EstadoPublicacion[] getAllEstados() {
         return EstadoPublicacion.values();
+    }
+    
+    @ModelAttribute("allCiudades")
+    public List<Ciudad> getAllCiudades() {
+        return servicioCiudad.getAll();
     }
 
     @RequestMapping(path="/delete/{id}", method=RequestMethod.POST)
@@ -95,6 +105,10 @@ public class PublicacionRegistrarEditarController {
             }
 
             try {
+            	
+            	if(formBean.getId() == null) {
+                    formBean.setEstado(EstadoPublicacion.ACTIVA);
+                }
 
                 Publicacion p = formBean.toPojo();
 
