@@ -6,49 +6,55 @@ import tuti.desi.entidades.EstadoPublicacion;
 
 public class PublicacionBuscarForm {
 //formulario de búsqueda.
-	 private Long propiedadSeleccionada;
-	    private Long ciudadSeleccionada;
-	    private EstadoPublicacion estadoSeleccionado;
-	    private BigDecimal precioMinimo;
-	    private BigDecimal precioMaximo;
+	private Long propiedadSeleccionada;
+    private Long ciudadSeleccionada;
+    private EstadoPublicacion estadoSeleccionado;
+    private BigDecimal precioMinimo;
+    private BigDecimal precioMaximo;
 
-	    public Long getPropiedadSeleccionada() {
-	        return propiedadSeleccionada;
-	    }
+    //constructor vacío
+    public PublicacionBuscarForm() {
 
-	    public void setPropiedadSeleccionada(Long propiedadSeleccionada) {
-	        this.propiedadSeleccionada = propiedadSeleccionada;
-	    }
+    }
 
-	    public Long getCiudadSeleccionada() {
-	        return ciudadSeleccionada;
-	    }
+    public Long getPropiedadSeleccionada() {
+        return propiedadSeleccionada;
+    }
 
-	    public void setCiudadSeleccionada(Long ciudadSeleccionada) {
-	        this.ciudadSeleccionada = ciudadSeleccionada;
-	    }
+    public void setPropiedadSeleccionada(Long propiedadSeleccionada) {
+        this.propiedadSeleccionada = propiedadSeleccionada;
+    }
 
-	    public EstadoPublicacion getEstadoSeleccionado() {
-	        return estadoSeleccionado;
-	    }
+    public Long getCiudadSeleccionada() {
+        return ciudadSeleccionada;
+    }
 
-	    public void setEstadoSeleccionado(EstadoPublicacion estadoSeleccionado) {
-	        this.estadoSeleccionado = estadoSeleccionado;
-	    }
+    public void setCiudadSeleccionada(Long ciudadSeleccionada) {
+        this.ciudadSeleccionada = ciudadSeleccionada;
+    }
 
-	    public BigDecimal getPrecioMinimo() {
-	        return precioMinimo;
-	    }
+    public EstadoPublicacion getEstadoSeleccionado() {
+        return estadoSeleccionado;
+    }
 
-	    public void setPrecioMinimo(BigDecimal precioMinimo) {
-	        this.precioMinimo = precioMinimo;
-	    }
+    public void setEstadoSeleccionado(EstadoPublicacion estadoSeleccionado) {
+        this.estadoSeleccionado = estadoSeleccionado;
+    }
 
-	    public BigDecimal getPrecioMaximo() {
-	        return precioMaximo;
-	    }
+    public BigDecimal getPrecioMinimo() {
+        return precioMinimo;
+    }
 
-	    public void setPrecioMaximo(BigDecimal precioMaximo) {
-	        this.precioMaximo = precioMaximo;
-	    }
+    public void setPrecioMinimo(BigDecimal precioMinimo) {
+        this.precioMinimo = precioMinimo;
+    }
+
+    public BigDecimal getPrecioMaximo() {
+        return precioMaximo;
+    }
+
+    public void setPrecioMaximo(BigDecimal precioMaximo) {
+        this.precioMaximo = precioMaximo;
+    }
+
 }

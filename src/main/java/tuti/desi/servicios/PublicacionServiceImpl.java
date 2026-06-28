@@ -17,6 +17,7 @@ import tuti.desi.entidades.HistorialEstadoPublicacion;
 import tuti.desi.entidades.Publicacion;
 import tuti.desi.excepciones.EntidadNoEncontradaException;
 import tuti.desi.excepciones.Excepcion;
+import tuti.desi.presentacion.publicaciones.PublicacionBuscarForm;
 
 @Service
 public class PublicacionServiceImpl implements PublicacionService {
@@ -31,6 +32,8 @@ public class PublicacionServiceImpl implements PublicacionService {
 	    public List<Publicacion> getAll() {
 	        return repo.findByEliminadoFalse();
 	    }
+	    
+	   
 
 	    @Override
 	    public Publicacion getById(Long idPublicacion) {
@@ -139,5 +142,15 @@ public class PublicacionServiceImpl implements PublicacionService {
 	        historial.setFechaHora(LocalDateTime.now());
 
 	        historialRepo.save(historial);
+	    }
+	    @Override
+	    public List<Publicacion> filter(PublicacionBuscarForm filter) throws Excepcion {
+
+	        return repo.filter(
+	                filter.getPropiedadSeleccionada(),
+	                filter.getCiudadSeleccionada(),
+	                filter.getEstadoSeleccionado(),
+	                filter.getPrecioMinimo(),
+	                filter.getPrecioMaximo());
 	    }
 }

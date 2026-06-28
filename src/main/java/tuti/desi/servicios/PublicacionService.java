@@ -3,6 +3,7 @@ import java.util.List;
 
 import tuti.desi.entidades.Publicacion;
 import tuti.desi.excepciones.Excepcion;
+import tuti.desi.presentacion.publicaciones.PublicacionBuscarForm;
 
 public interface PublicacionService {
 /*Es una interfaz
@@ -10,6 +11,8 @@ public interface PublicacionService {
 	
 	List<Publicacion> getAll();
 
+	List<Publicacion> filter(PublicacionBuscarForm filter) throws Excepcion;
+	
 	Publicacion getById(Long idPublicacion);
 
 	void deleteById(Long id) throws Excepcion;

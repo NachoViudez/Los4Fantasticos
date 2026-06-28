@@ -53,7 +53,7 @@ public class PublicacionForm {
 
     public Publicacion toPojo() {
 
-        Publicacion p = new Publicacion();
+    	Publicacion p = new Publicacion();
 
         p.setId(id);
         p.setPrecioMensual(precioMensual);
@@ -61,10 +61,6 @@ public class PublicacionForm {
         p.setDescripcion(descripcion);
         p.setFechaPublicacion(fechaPublicacion);
         p.setEstado(estado);
-
-        Propiedad propiedad = new Propiedad();
-        propiedad.setId(idPropiedad);
-        p.setPropiedad(propiedad);
 
         return p;
     }
