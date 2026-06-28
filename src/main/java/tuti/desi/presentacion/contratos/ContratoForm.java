@@ -2,6 +2,7 @@ package tuti.desi.presentacion.contratos;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import tuti.desi.entidades.EstadoContrato;
+import tuti.desi.entidades.Contrato;
 
 public class ContratoForm {
 	private Long id;
@@ -13,6 +14,21 @@ public class ContratoForm {
 	private Integer diaVencimientoMensual;
 	private String descripcion;
 	private EstadoContrato estado;
+	
+	public ContratoForm() {
+	}
+
+	public ContratoForm(Contrato contrato) {
+		this.id = contrato.getId();
+		this.idPropiedadSeleccionada = contrato.getPropiedad().getId();
+		this.idInquilinoSeleccionado = contrato.getInquilino().getId();
+		this.fechaInicio = contrato.getFechaInicio();
+		this.duracionMeses = contrato.getDuracionMeses();
+		this.importeMensual = contrato.getImporteMensual();
+		this.diaVencimientoMensual = contrato.getDiaVencimientoMensual();
+		this.descripcion = contrato.getDescripcion();
+		this.estado = contrato.getEstado();
+	}
 
 	public Long getId() {
 		return id;
