@@ -1,102 +1,128 @@
 package tuti.desi.servicios;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tuti.desi.accesoDatos.HistorialEstadoPublicacionRepo;
 import tuti.desi.accesoDatos.PublicacionRepo;
 import tuti.desi.entidades.EstadoDisponibilidad;
 import tuti.desi.entidades.EstadoPublicacion;
+import tuti.desi.entidades.HistorialEstadoPublicacion;
 import tuti.desi.entidades.Publicacion;
 import tuti.desi.excepciones.EntidadNoEncontradaException;
 import tuti.desi.excepciones.Excepcion;
 
 @Service
-public class PublicacionServiceImpl implements PublicacionService{
-	 @Autowired
-	    private PublicacionRepo repo;
+public class PublicacionServiceImpl implements PublicacionService {
 
-	    @Override
-	    public List<Publicacion> getAll() {
-	        return repo.findByEliminadoFalse();
-	    }
+    @Autowired
+    private PublicacionRepo repo;
 
-	    @Override
-	    public Publicacion getById(Long idPublicacion) {
-	        return repo.findByIdAndEliminadoFalse(idPublicacion)
-	                .orElseThrow(() ->
-	                        new EntidadNoEncontradaException("la publicación", idPublicacion));
-	    }
+    @Autowired
+    private HistorialEstadoPublicacionRepo historialRepo;
 
-	    @Override
-	    public void deleteById(Long id) throws Excepcion {
+    @Override
+    public List<Publicacion> getAll() {
+        return repo.findByEliminadoFalse();
+    }
 
-	        Publicacion p = getById(id);
+    @Override
+    public Publicacion getById(Long idPublicacion) {
+        return repo.findByIdAndEliminadoFalse(idPublicacion)
+                .orElseThrow(() ->
+                        new EntidadNoEncontradaException("la publicación", idPublicacion));
+    }
 
-	        // Solo pueden eliminarse publicaciones activas
-	        if (p.getEstado() != EstadoPublicacion.ACTIVA) {
-	            throw new Excepcion("Solo pueden eliminarse publicaciones activas.");
-	        }
+    @Override
+    public void deleteById(Long id) throws Excepcion {
 
-	        p.setEliminado(true);
+        Publicacion p = getById(id);
 
-	        repo.save(p);
-	    }
+        // Solo pueden eliminarse publicaciones activas
+        if (p.getEstado() != EstadoPublicacion.ACTIVA) {
+            throw new Excepcion("Solo pueden eliminarse publicaciones activas.");
+        }
 
-	    @Override
-	    public void save(Publicacion p) throws Excepcion {
+        p.setEliminado(true);
 
-	        // Validar precio
-	        if (p.getPrecioMensual() == null ||
-	                p.getPrecioMensual().compareTo(BigDecimal.ZERO) <= 0) {
-	            throw new Excepcion("El precio mensual debe ser mayor a cero.");
-	        }
+        repo.save(p);
+    }
 
-	        // Validar fecha
-	        if (p.getFechaPublicacion() == null) {
-	            throw new Excepcion("Debe ingresar una fecha de publicación.");
-	        }
+    @Override
+    public void save(Publicacion p) throws Excepcion {
 
-	        // Validar propiedad
-	        if (p.getPropiedad() == null) {
-	            throw new Excepcion("Debe seleccionar una propiedad.");
-	        }
+        // Validar precio
+        if (p.getPrecioMensual() == null ||
+                p.getPrecioMensual().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new Excepcion("El precio mensual debe ser mayor a cero.");
+        }
 
-	        // Solo propiedades disponibles
-	        if (p.getPropiedad().getEstadoDisponibilidad() != EstadoDisponibilidad.DISPONIBLE) {
-	            throw new Excepcion("Solo se pueden publicar propiedades disponibles.");
-	        }
+        // Validar propiedad
+        if (p.getPropiedad() == null) {
+            throw new Excepcion("Debe seleccionar una propiedad.");
+        }
 
-	        if (p.getId() == null) {
+        // Solo propiedades disponibles
+        if (p.getPropiedad().getEstadoDisponibilidad() != EstadoDisponibilidad.DISPONIBLE) {
+            throw new Excepcion("Solo se pueden publicar propiedades disponibles.");
+        }
 
-	            // Alta
-	            if (repo.existsByPropiedadIdAndEstadoAndEliminadoFalse(
-	                    p.getPropiedad().getId(),
-	                    EstadoPublicacion.ACTIVA)) {
+        if (p.getId() == null) {
 
-	                throw new Excepcion("La propiedad ya posee una publicación activa.");
-	            }
+            // Alta
+            if (repo.existsByPropiedadIdAndEstadoAndEliminadoFalse(
+                    p.getPropiedad().getId(),
+                    EstadoPublicacion.ACTIVA)) {
 
-	            // Estado por defecto
-	            p.setEstado(EstadoPublicacion.ACTIVA);
-	            p.setEliminado(false);
+                throw new Excepcion("La propiedad ya posee una publicación activa.");
+            }
 
-	        } else {
+            // Valores por defecto
+            p.setEstado(EstadoPublicacion.ACTIVA);
+            p.setFechaPublicacion(LocalDate.now());
+            p.setEliminado(false);
 
-	            // Edición
-	            if (repo.existsByPropiedadIdAndEstadoAndEliminadoFalseAndIdNot(
-	                    p.getPropiedad().getId(),
-	                    EstadoPublicacion.ACTIVA,
-	                    p.getId())) {
+            Publicacion guardada = repo.save(p);
+            guardarHistorial(guardada);
 
-	                throw new Excepcion("La propiedad ya posee otra publicación activa.");
-	            }
-	        }
+        } else {
 
-	        repo.save(p);
-	    }
+            // Obtengo la publicación actual
+            Publicacion actual = getById(p.getId());
 
-	
+            // No permitir otra publicación activa para la misma propiedad
+            if (repo.existsByPropiedadIdAndEstadoAndEliminadoFalseAndIdNot(
+                    p.getPropiedad().getId(),
+                    EstadoPublicacion.ACTIVA,
+                    p.getId())) {
+
+                throw new Excepcion("La propiedad ya posee otra publicación activa.");
+            }
+
+            // Detectar cambio de estado
+            boolean cambioEstado = actual.getEstado() != p.getEstado();
+
+            p.setEliminado(false);
+
+            Publicacion guardada = repo.save(p);
+
+            if (cambioEstado) {
+                guardarHistorial(guardada);
+            }
+        }
+    }
+
+    private void guardarHistorial(Publicacion publicacion) {
+        HistorialEstadoPublicacion historial = new HistorialEstadoPublicacion();
+        historial.setPublicacion(publicacion);
+        historial.setEstado(publicacion.getEstado());
+        historial.setFechaHora(LocalDateTime.now());
+
+        historialRepo.save(historial);
+    }
 }
