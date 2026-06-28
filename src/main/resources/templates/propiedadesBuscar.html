@@ -61,6 +61,7 @@
 		<table class="resultados" border="0" style="align-self: center;">
 			<thead>
 				<tr>
+					<th><label th:text="#{propiedad.id}" /></th>
 					<th><label th:text="#{propiedad.direccion}" /></th>
 					<th><label th:text="#{propiedad.ciudad}" /></th>
 					<th><label th:text="#{propiedad.tipo}" /></th>
@@ -74,6 +75,7 @@
 			</thead>
 			<tbody>
 				<tr th:each="propiedad : ${resultados}">
+					<td th:text="${propiedad.id}" ></td>
 					<td th:text="${propiedad.direccion}"></td>
 					<td th:text="${propiedad.ciudad == null ? '' : propiedad.ciudad.nombre}"></td>
 					<td th:text="${propiedad.tipo}"></td>
