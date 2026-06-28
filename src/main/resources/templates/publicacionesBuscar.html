@@ -44,6 +44,28 @@
             </td>
 
         </tr>
+		
+		<tr>
+
+		    <td>Ciudad</td>
+
+		    <td>
+
+		        <select th:field="*{ciudadSeleccionada}">
+
+		            <option value="">Todas</option>
+
+		            <option
+		                    th:each="c : ${allCiudades}"
+		                    th:value="${c.id}"
+		                    th:text="${c.nombre}">
+		            </option>
+
+		        </select>
+
+		    </td>
+
+		</tr>
 
         <tr>
 
@@ -189,14 +211,15 @@
 
         <td>
 
-            <form th:action="@{/publicacionEditar/delete/{id}(id=${p.id})}"
-                  method="post">
+			<button
+			        type="submit"
+			        th:formaction="@{/publicacionEditar/delete/{id}(id=${p.id})}"
+			        formmethod="post"
+			        onclick="return confirm('¿Está seguro que desea eliminar esta publicación?');">
 
-                <button type="submit">
-                    Eliminar
-                </button>
+			    Eliminar
 
-            </form>
+			</button>
 
         </td>
 

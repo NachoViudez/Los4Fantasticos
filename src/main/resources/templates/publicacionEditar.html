@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Publicación</title>
+	<title><span th:text="#{publicacion.editar.titulo}"></span></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
@@ -9,9 +9,9 @@
 <body>
 
 <div class="starter-template">
-    <h1>Inmobiliaria</h1>
+	<h1><span th:text="#{empresa}"></span></h1>
 
-    <h2 th:text="${formBean.id} ? 'Editar publicación' : 'Registrar publicación'"></h2>
+	<h2 th:text="${formBean.id} ? #{publicacion.editar.titulo} : #{publicacion.registrar.titulo}"></h2>
 </div>
 
 <form th:action="@{/publicacionEditar}" th:object="${formBean}" method="post">
@@ -22,7 +22,7 @@
 
     <input type="hidden" th:field="*{id}"/>
 
-    <table>
+	<table border="0" style="align-self:center;">
 
         <tr>
             <td>Propiedad</td>
@@ -85,6 +85,15 @@
                 </textarea>
 
             </td>
+			<td>
+
+			    <p
+			        th:if="${#fields.hasErrors('condiciones')}"
+			        th:errorclass="error"
+			        th:errors="*{condiciones}">
+			    </p>
+
+			</td>
 
         </tr>
 
@@ -101,6 +110,15 @@
                 </textarea>
 
             </td>
+			<td>
+
+			    <p
+			        th:if="${#fields.hasErrors('descripcion')}"
+			        th:errorclass="error"
+			        th:errors="*{descripcion}">
+			    </p>
+
+			</td>
 
         </tr>
 
@@ -126,24 +144,25 @@
         </tr>
 
         <tr>
+			</select>
 
-            <td>Estado</td>
+			       <input
+			               th:if="${formBean.id == null}"
+			               type="hidden"
+			               th:field="*{estado}"/>
 
-            <td>
+			   </td>
 
-                <select th:field="*{estado}">
+			   <td>
 
-                    <option
-                            th:each="e : ${allEstados}"
-                            th:value="${e}"
-                            th:text="${e}">
-                    </option>
+			       <p
+			           th:if="${#fields.hasErrors('estado')}"
+			           th:errorclass="error"
+			           th:errors="*{estado}">
+			       </p>
 
-                </select>
-
-            </td>
-
-        </tr>
+			   </td>
+		 </tr>
 
     </table>
 
@@ -156,9 +175,9 @@
                 <button
                         type="submit"
                         name="action"
-                        value="actionAceptar">
+                        value="actionAceptar"
+						th:text="#{botones.aceptar}">
 
-                    Aceptar
 
                 </button>
 
@@ -169,9 +188,9 @@
                 <button
                         type="submit"
                         name="action"
-                        value="actionCancelar">
+                        value="actionCancelar"
+						th:text="#{botones.cancelar}">
 
-                    Cancelar
 
                 </button>
 
