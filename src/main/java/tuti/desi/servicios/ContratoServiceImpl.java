@@ -48,6 +48,19 @@ public class ContratoServiceImpl implements ContratoService {
 
 	@Override
 	public void guardar(ContratoForm form) throws Excepcion {	
+		//validar que los campos esten completos
+		if (form.getFechaInicio() == null)
+		    throw new Excepcion("La fecha de inicio es obligatoria", "fechaInicio");
+
+		if (form.getDuracionMeses() == null)
+		    throw new Excepcion("La duración es obligatoria", "duracionMeses");
+
+		if (form.getImporteMensual() == null)
+		    throw new Excepcion("El importe mensual es obligatorio", "importeMensual");
+
+		if (form.getDiaVencimientoMensual() == null)
+		    throw new Excepcion("El día de vencimiento es obligatorio", "diaVencimientoMensual");
+		
 		Propiedad propiedad = propiedadRepo.findById(form.getIdPropiedadSeleccionada())
 				.orElseThrow(() -> new EntidadNoEncontradaException("la propiedad", form.getIdPropiedadSeleccionada()));
 		
@@ -98,7 +111,7 @@ public class ContratoServiceImpl implements ContratoService {
 
 	@Override
 	public List<Propiedad> buscarPropiedades() {
-		return propiedadRepo.findAll();
+		return propiedadRepo.findByEliminadoFalse();
 	}
 
 	@Override
@@ -112,18 +125,21 @@ public class ContratoServiceImpl implements ContratoService {
 	}
 	
 	private void validarContrato(ContratoForm form, Propiedad propiedad) throws Excepcion {
-		
 		if(form.getEstado() == EstadoContrato.ACTIVO) {
-			
-			if(propiedad.getEstadoDisponibilidad() != EstadoDisponibilidad.DISPONIBLE) {
+			if(form.getId() == null && propiedad.getEstadoDisponibilidad() != EstadoDisponibilidad.DISPONIBLE) {
 				throw new Excepcion("No se puede activar el contrato porque la propiedad no está disponible");
 			}
-			
+			if(form.getId() != null) {
+				Contrato contratoActual = buscarPorId(form.getId());
+				if(contratoActual.getEstado() != EstadoContrato.ACTIVO 
+						&& propiedad.getEstadoDisponibilidad() != EstadoDisponibilidad.DISPONIBLE) {
+					throw new Excepcion("No se puede activar el contrato porque la propiedad no está disponible");
+				}
+			}
 			if(form.getId() == null 
 					&& !repo.findByPropiedadAndEstado(form.getIdPropiedadSeleccionada(), EstadoContrato.ACTIVO).isEmpty()) {
 				throw new Excepcion("La propiedad ya tiene un contrato activo");
 			}
-			
 			if(form.getId() != null 
 					&& !repo.findOtroContratoByPropiedadAndEstado(form.getIdPropiedadSeleccionada(), EstadoContrato.ACTIVO, form.getId()).isEmpty()) {
 				throw new Excepcion("Existe otro contrato activo para la misma propiedad");

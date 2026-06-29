@@ -1,7 +1,7 @@
 package tuti.desi.presentacion.contratos;
 import java.util.List;
 import java.util.Optional;
-
+import org.springframework.validation.FieldError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,8 +70,15 @@ public class ContratoRegistrarEditarController {
 					servicioContrato.guardar(formBean);
 					return "redirect:/contratosBuscar";
 				} catch (Excepcion e) {
-					ObjectError error = new ObjectError("globalError", e.getMessage());
-					result.addError(error);
+
+					if (e.getAtributo() == null) {
+						ObjectError error = new ObjectError("globalError", e.getMessage());
+						result.addError(error);
+					} else {
+						FieldError error = new FieldError("formBean", e.getAtributo(), e.getMessage());
+						result.addError(error);
+					}
+
 					modelo.addAttribute("formBean", formBean);
 					return "contratoEditar";
 				}
