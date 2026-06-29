@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title><span th:text="#{publicacion.editar.titulo}"></span></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+
+<body>
+
+<div class="starter-template">
+	<h1><span th:text="#{empresa}"></span></h1>
+
+	<h2 th:text="${formBean.id} ? #{publicacion.editar.titulo} : #{publicacion.registrar.titulo}"></h2>
+</div>
+
+<form th:action="@{/publicacionEditar}" th:object="${formBean}" method="post">
+
+    <p th:each="err : ${#fields.errors('global')}"
+       th:text="${err}"
+       class="error"/>
+
+    <input type="hidden" th:field="*{id}"/>
+
+	<table border="0" style="align-self:center;">
+
+        <tr>
+            <td>Propiedad</td>
+
+            <td>
+
+                <select th:field="*{idPropiedad}"
+                        th:disabled="${formBean.id != null}">
+
+                    <option value="">Seleccione...</option>
+
+                    <option th:each="p : ${allPropiedades}"
+                            th:value="${p.id}"
+                            th:text="${p.direccion}">
+                    </option>
+
+                </select>
+
+                <input
+                        th:if="${formBean.id != null}"
+                        type="hidden"
+                        th:field="*{idPropiedad}"/>
+
+            </td>
+
+            <td>
+                <p th:errors="*{idPropiedad}"
+                   class="error"></p>
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Precio mensual</td>
+
+            <td>
+                <input type="number"
+                       step="0.01"
+                       th:field="*{precioMensual}"/>
+            </td>
+
+            <td>
+                <p th:errors="*{precioMensual}"
+                   class="error"></p>
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Condiciones</td>
+
+            <td>
+
+                <textarea
+                        rows="5"
+                        cols="50"
+                        th:field="*{condiciones}">
+                </textarea>
+
+            </td>
+			<td>
+
+			    <p
+			        th:if="${#fields.hasErrors('condiciones')}"
+			        th:errorclass="error"
+			        th:errors="*{condiciones}">
+			    </p>
+
+			</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Descripción</td>
+
+            <td>
+
+                <textarea
+                        rows="5"
+                        cols="50"
+                        th:field="*{descripcion}">
+                </textarea>
+
+            </td>
+			<td>
+
+			    <p
+			        th:if="${#fields.hasErrors('descripcion')}"
+			        th:errorclass="error"
+			        th:errors="*{descripcion}">
+			    </p>
+
+			</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Fecha publicación</td>
+
+            <td>
+
+                <input
+                        type="date"
+                        th:field="*{fechaPublicacion}"/>
+
+            </td>
+
+            <td>
+
+                <p th:errors="*{fechaPublicacion}"
+                   class="error"></p>
+
+            </td>
+
+        </tr>
+		        <tr>
+
+		            <td>Estado</td>
+
+		            <td>
+
+		                <select th:field="*{estado}">
+
+							<option
+							                   th:each="e : ${allEstados}"
+							                   th:value="${e}"
+							                   th:text="${e}">
+							           </option>
+
+							       </select>
+
+							   </td>
+
+							   <td>
+
+							       <p
+							               th:if="${#fields.hasErrors('estado')}"
+							               th:errorclass="error"
+							               th:errors="*{estado}">
+							       </p>
+
+							   </td>
+
+		        </tr>
+				
+		    </table>
+
+		    <table class="botones">
+
+		        <tr>
+
+		            <td>
+		                <button
+		                        type="submit"
+		                        name="action"
+		                        value="actionAceptar"
+		                        th:text="#{botones.aceptar}">
+		                </button>
+		            </td>
+
+		            <td>
+		                <button
+		                        type="submit"
+		                        name="action"
+		                        value="actionCancelar"
+		                        th:text="#{botones.cancelar}">
+		                </button>
+		            </td>
+
+		        </tr>
+
+		    </table>
+
+		</form>
+
+		</body>
+		</html>
