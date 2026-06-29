@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title><span th:text="#{propiedad.buscar.titulo}"></span></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+
+<body>
+	<div class="starter-template">
+		<h1><span th:text="#{empresa}" /></h1>
+		<h2>
+			<span th:text="#{propiedad.buscar.titulo}"></span>
+		</h2>
+	</div>
+	<form th:action="@{/propiedadesBuscar}" th:object="${formBean}" method="post">
+		<p th:if="${errorEliminar != null}" th:text="${errorEliminar}" class="error" />
+		<p th:each="err : ${#fields.errors('global')}" th:text="${err}" class="error" />
+		<table border="1" style="align-self: center;">
+			<tr>
+				<td><label th:text="#{propiedad.direccion}" /></td>
+				<td><input type="text" th:field="*{direccion}" /></td>
+
+			</tr>
+			<tr>
+				<td><label th:text="#{propiedad.ciudad}" /></td>
+				<td>
+					<select th:field="*{ciudadSeleccionada}">
+						<option value="">Seleccione una opcion</option>
+						<option th:each="c : ${allCiudades}" th:value="${c.id}" th:text="${c.nombre}"></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><label th:text="#{propiedad.tipo}" /></td>
+				<td>
+					<select th:field="*{tipoSeleccionado}">
+						<option value="">Seleccione una opcion</option>
+						<option th:each="t : ${tiposPropiedad}" th:value="${t}" th:text="${t}"></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><label th:text="#{propiedad.estadoDisponibilidad}" /></td>
+				<td>
+					<select th:field="*{estadoSeleccionado}">
+						<option value="">Seleccione una opcion</option>
+						<option th:each="e : ${estadosDisponibilidad}" th:value="${e}" th:text="${e}"></option>
+					</select>
+				</td>
+			</tr>
+		</table>
+		<table class="botones">
+			<tr>
+				<td><button type="submit" name="action" value="actionBuscar" th:text="#{botones.buscar}" /></td>
+				<td><button type="submit" name="action" value="actionCancelar" th:text="#{botones.cancelar}" /></td>
+				<td><button type="submit" name="action" value="actionRegistrar" th:text="#{botones.registrar}" /></td>
+			</tr>
+		</table>
+		<table class="resultados" border="0" style="align-self: center;">
+			<thead>
+				<tr>
+					<th><label th:text="#{propiedad.id}" /></th>
+					<th><label th:text="#{propiedad.direccion}" /></th>
+					<th><label th:text="#{propiedad.ciudad}" /></th>
+					<th><label th:text="#{propiedad.tipo}" /></th>
+					<th><label th:text="#{propiedad.cantidadAmbientes}" /></th>
+					<th><label th:text="#{propiedad.metrosCuadrados}" /></th>
+					<th><label th:text="#{propiedad.estadoDisponibilidad}" /></th>
+					<th><label th:text="#{propiedad.propietario}" /></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="propiedad : ${resultados}">
+					<td th:text="${propiedad.id}" ></td>
+					<td th:text="${propiedad.direccion}"></td>
+					<td th:text="${propiedad.ciudad == null ? '' : propiedad.ciudad.nombre}"></td>
+					<td th:text="${propiedad.tipo}"></td>
+					<td th:text="${propiedad.cantidadAmbientes}"></td>
+					<td th:text="${propiedad.metrosCuadrados}"></td>
+					<td th:text="${propiedad.estadoDisponibilidad}"></td>
+					<td th:text="${propiedad.propietario == null ? '' : propiedad.propietario.nombre}"></td>
+					<td>
+						<a th:href="@{/propiedadEditar/{id}(id=${propiedad.id})}" class="btn btn-primary"
+							th:text="#{links.editar}">
+						</a>
+					</td>
+					<td>
+						<button type="submit" th:formaction="@{/propiedadEditar/delete/{id}(id=${propiedad.id})}" formmethod="post"
+							class="btn btn-primary" th:text="#{links.eliminar}"
+							onclick="return confirm('¿Estás seguro que deseas eliminar esta propiedad?');">
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</form>
+</body>
+
+</html>

@@ -32,6 +32,5 @@ public interface PropiedadRepo extends JpaRepository<Propiedad, Long> {
 	boolean existsByDireccionAndCiudadIdAndIdNotAndEliminadoFalse(String direccion, Long idCiudad, Long id);
 		
 	List<Propiedad> findByEliminadoFalse();
-
 	
 }
