@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Buscar contratos</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+
+<body>
+	<div class="starter-template">
+		<h1><span th:text="#{empresa}" /></h1>
+		<h2>Buscar contratos</h2>
+	</div>
+
+	<form th:action="@{/contratosBuscar}" th:object="${formBean}" method="post">
+		<p th:if="${errorEliminar != null}" th:text="${errorEliminar}" class="error" />
+		<p th:each="err : ${#fields.errors('global')}" th:text="${err}" class="error" />
+
+		<table border="1" style="align-self: center;">
+			<tr>
+				<td><label>Propiedad</label></td>
+				<td>
+					<select th:field="*{idPropiedadSeleccionada}">
+						<option value="">Seleccione una opcion</option>
+						<option th:each="p : ${allPropiedades}" 
+								th:value="${p.id}" 
+								th:text="${p.direccion}">
+						</option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td><label>Inquilino</label></td>
+				<td>
+					<select th:field="*{idInquilinoSeleccionado}">
+						<option value="">Seleccione una opcion</option>
+						<option th:each="i : ${allInquilinos}" 
+								th:value="${i.id}" 
+								th:text="${i.nombre}">
+						</option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td><label>Estado</label></td>
+				<td>
+					<select th:field="*{estado}">
+						<option value="">Seleccione una opcion</option>
+						<option th:each="e : ${estadosContrato}" 
+								th:value="${e}" 
+								th:text="${e}">
+						</option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td><label>Fecha de inicio</label></td>
+				<td><input type="date" th:field="*{fechaInicio}" /></td>
+			</tr>
+		</table>
+
+		<table class="botones">
+			<tr>
+				<td><button type="submit" name="action" value="actionBuscar" th:text="#{botones.buscar}" /></td>
+				<td><button type="submit" name="action" value="actionCancelar" th:text="#{botones.cancelar}" /></td>
+				<td><button type="submit" name="action" value="actionRegistrar" th:text="#{botones.registrar}" /></td>
+			</tr>
+		</table>
+
+		<table class="resultados" border="0" style="align-self: center;">
+			<thead>
+				<tr>
+					<th><label>ID</label></th>
+					<th><label>Propiedad</label></th>
+					<th><label>Propietario</label></th>
+					<th><label>Inquilino</label></th>
+					<th><label>Fecha inicio</label></th>
+					<th><label>Importe mensual</label></th>
+					<th><label>Día vencimiento</label></th>
+					<th><label>Estado</label></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="contrato : ${resultados}">
+					<td th:text="${contrato.id}"></td>
+					<td th:text="${contrato.propiedad == null ? '' : contrato.propiedad.direccion}"></td>
+					<td th:text="${contrato.propiedad == null || contrato.propiedad.propietario == null ? '' : contrato.propiedad.propietario.nombre}"></td>
+					<td th:text="${contrato.inquilino == null ? '' : contrato.inquilino.nombre}"></td>
+					<td th:text="${contrato.fechaInicio}"></td>
+					<td th:text="${contrato.importeMensual}"></td>
+					<td th:text="${contrato.diaVencimientoMensual}"></td>
+					<td th:text="${contrato.estado}"></td>
+
+					<td>
+						<a th:href="@{/contratoEditar/{id}(id=${contrato.id})}" class="btn btn-primary">
+							Editar
+						</a>
+					</td>
+
+					<td>
+						<button type="submit" 
+								th:formaction="@{/contratoEditar/delete/{id}(id=${contrato.id})}" 
+								formmethod="post"
+								class="btn btn-primary"
+								onclick="return confirm('¿Estás seguro que deseas eliminar este contrato?');">
+							Eliminar
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</form>
+</body>
+
+</html>
