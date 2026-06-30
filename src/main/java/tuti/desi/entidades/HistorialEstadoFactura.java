@@ -2,64 +2,84 @@ package tuti.desi.entidades;
 
 import java.time.LocalDateTime;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "historial_estados_factura")
 public class HistorialEstadoFactura {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@NotNull(message = "El estado es obligatorio")
-	@Enumerated(EnumType.STRING)
-	private EstadoFactura estado;
+    @ManyToOne
+    @JoinColumn(name = "factura_id", nullable = false)
+    private Factura factura;
 
-	@NotNull(message = "La fecha y hora es obligatoria")
-	private LocalDateTime fechaHora;
+    @Enumerated(EnumType.STRING)
+    private EstadoFactura estadoAnterior;
 
-	@NotNull(message = "La factura es obligatoria")
-	@ManyToOne(optional = false)
-	private Factura factura;
+    @Enumerated(EnumType.STRING)
+    private EstadoFactura estadoNuevo;
 
-	public Long getId() {
-		return id;
-	}
+    private LocalDateTime fechaCambio;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public HistorialEstadoFactura() {
+    }
 
-	public EstadoFactura getEstado() {
-		return estado;
-	}
+    public HistorialEstadoFactura(Factura factura, EstadoFactura estadoAnterior, EstadoFactura estadoNuevo) {
+        this.factura = factura;
+        this.estadoAnterior = estadoAnterior;
+        this.estadoNuevo = estadoNuevo;
+        this.fechaCambio = LocalDateTime.now();
+    }
 
-	public void setEstado(EstadoFactura estado) {
-		this.estado = estado;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public LocalDateTime getFechaHora() {
-		return fechaHora;
-	}
+    public Factura getFactura() {
+        return factura;
+    }
 
-	public void setFechaHora(LocalDateTime fechaHora) {
-		this.fechaHora = fechaHora;
-	}
+    public EstadoFactura getEstadoAnterior() {
+        return estadoAnterior;
+    }
 
-	public Factura getFactura() {
-		return factura;
-	}
+    public EstadoFactura getEstadoNuevo() {
+        return estadoNuevo;
+    }
 
-	public void setFactura(Factura factura) {
-		this.factura = factura;
-	}
+    public LocalDateTime getFechaCambio() {
+        return fechaCambio;
+    }
 
-	
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setFactura(Factura factura) {
+        this.factura = factura;
+    }
+
+    public void setEstadoAnterior(EstadoFactura estadoAnterior) {
+        this.estadoAnterior = estadoAnterior;
+    }
+
+    public void setEstadoNuevo(EstadoFactura estadoNuevo) {
+        this.estadoNuevo = estadoNuevo;
+    }
+
+    public void setFechaCambio(LocalDateTime fechaCambio) {
+        this.fechaCambio = fechaCambio;
+    }
 }

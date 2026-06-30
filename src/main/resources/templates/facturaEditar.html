@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Editar Factura</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+
+<body>
+
+    <div class="starter-template">
+        <h1>Los 4 Fantásticos</h1>
+        <h2>Editar Factura</h2>
+    </div>
+
+    <div th:if="${mensajeError}" style="color: red; text-align: center;">
+        <p th:text="${mensajeError}"></p>
+    </div>
+
+    <form th:action="@{/facturas/actualizar/{id}(id=${factura.id})}"
+          th:object="${factura}"
+          method="post">
+
+        <table border="1" style="margin-left: auto; margin-right: auto; border-collapse: collapse;">
+
+            <tr>
+                <td><label>ID</label></td>
+                <td>
+                    <input type="text" th:value="${factura.id}" readonly />
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Contrato</label></td>
+                <td>
+                    <input type="text" th:value="${factura.contrato.descripcion}" readonly />
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Concepto</label></td>
+                <td>
+                    <input type="text" th:field="*{concepto}" required />
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Fecha de emisión</label></td>
+                <td>
+                    <input type="date" th:field="*{fechaEmision}" required />
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Fecha de vencimiento</label></td>
+                <td>
+                    <input type="date" th:field="*{fechaVencimiento}" required />
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Importe</label></td>
+                <td>
+                    <input type="number" step="0.01" min="0.01" th:field="*{importe}" required />
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Estado</label></td>
+                <td>
+                    <select th:field="*{estado}" required>
+                        <option th:each="estado : ${estados}"
+                                th:value="${estado}"
+                                th:text="${estado}">
+                        </option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" style="text-align: center; font-weight: bold;">
+                    Datos de pago, solo completar si la factura pasa a PAGADA
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Fecha de pago</label></td>
+                <td>
+                    <input type="date" th:field="*{fechaPago}" />
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Medio de pago</label></td>
+                <td>
+                    <select th:field="*{medioPago}">
+                        <option value="">Seleccione un medio</option>
+                        <option th:each="medio : ${mediosPago}"
+                                th:value="${medio}"
+                                th:text="${medio}">
+                        </option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Importe pagado</label></td>
+                <td>
+                    <input type="number" step="0.01" min="0.01" th:field="*{importePagado}" />
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Interés pagado</label></td>
+                <td>
+                    <input type="number" step="0.01" min="0" th:field="*{interesPagado}" />
+                </td>
+            </tr>
+
+        </table>
+
+        <table class="botones" style="margin-left: auto; margin-right: auto; margin-top: 20px;">
+            <tr>
+                <td>
+                    <button type="submit" class="btn-primary">
+                        Guardar cambios
+                    </button>
+                </td>
+
+                <td>
+                    <a th:href="@{/facturas}" class="btn-primary">
+                        Cancelar
+                    </a>
+                </td>
+            </tr>
+        </table>
+
+    </form>
+
+</body>
+
+</html>

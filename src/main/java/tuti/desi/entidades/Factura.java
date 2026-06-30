@@ -9,148 +9,140 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "facturas")
 public class Factura {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@NotNull(message = "La fecha de emisión es obligatoria")
-	private LocalDate fechaEmision;
+    @ManyToOne
+    @JoinColumn(name = "contrato_id", nullable = false)
+    private Contrato contrato;
 
-	@NotNull(message = "La fecha de vencimiento es obligatoria")
-	private LocalDate fechaVencimiento;
+    private String concepto;
 
-	@NotNull(message = "El importe es obligatorio")
-	@Positive(message = "El importe debe ser mayor a 0")
-	private BigDecimal importe;
+    private LocalDate fechaEmision;
 
-	@NotNull(message = "El estado de la factura es obligatorio")
-	@Enumerated(EnumType.STRING)
-	private EstadoFactura estado;
+    private LocalDate fechaVencimiento;
 
-	private Boolean eliminado;
+    private BigDecimal importe;
 
-	private LocalDate fechaPago;
+    @Enumerated(EnumType.STRING)
+    private EstadoFactura estado = EstadoFactura.PENDIENTE;
 
-	@Enumerated(EnumType.STRING)
-	private MedioPago medio;
+    private LocalDate fechaPago;
 
-	@PositiveOrZero(message = "El importe pagado no puede ser negativo")
-	private BigDecimal importePagado;
+    @Enumerated(EnumType.STRING)
+    private MedioPago medioPago;
 
-	@PositiveOrZero(message = "El interés no puede ser negativo")
-	private BigDecimal interes;
+    private BigDecimal importePagado;
 
-	@Size(max = 300)
-	private String conceptoFacturado;
+    private BigDecimal interesPagado;
 
-	@NotNull(message = "El contrato es obligatorio")
-	@ManyToOne(optional = false)
-	private Contrato contrato;
+    private boolean eliminado = false;
 
-	public Long getId() {
-		return id;
-	}
+    public Factura() {
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public LocalDate getFechaEmision() {
-		return fechaEmision;
-	}
+    public Contrato getContrato() {
+        return contrato;
+    }
 
-	public void setFechaEmision(LocalDate fechaEmision) {
-		this.fechaEmision = fechaEmision;
-	}
+    public String getConcepto() {
+        return concepto;
+    }
 
-	public LocalDate getFechaVencimiento() {
-		return fechaVencimiento;
-	}
+    public LocalDate getFechaEmision() {
+        return fechaEmision;
+    }
 
-	public void setFechaVencimiento(LocalDate fechaVencimiento) {
-		this.fechaVencimiento = fechaVencimiento;
-	}
+    public LocalDate getFechaVencimiento() {
+        return fechaVencimiento;
+    }
 
-	public BigDecimal getImporte() {
-		return importe;
-	}
+    public BigDecimal getImporte() {
+        return importe;
+    }
 
-	public void setImporte(BigDecimal importe) {
-		this.importe = importe;
-	}
+    public EstadoFactura getEstado() {
+        return estado;
+    }
 
-	public EstadoFactura getEstado() {
-		return estado;
-	}
+    public LocalDate getFechaPago() {
+        return fechaPago;
+    }
 
-	public void setEstado(EstadoFactura estado) {
-		this.estado = estado;
-	}
+    public MedioPago getMedioPago() {
+        return medioPago;
+    }
 
-	public Boolean getEliminado() {
-		return eliminado;
-	}
+    public BigDecimal getImportePagado() {
+        return importePagado;
+    }
 
-	public void setEliminado(Boolean eliminado) {
-		this.eliminado = eliminado;
-	}
+    public BigDecimal getInteresPagado() {
+        return interesPagado;
+    }
 
-	public LocalDate getFechaPago() {
-		return fechaPago;
-	}
+    public boolean isEliminado() {
+        return eliminado;
+    }
 
-	public void setFechaPago(LocalDate fechaPago) {
-		this.fechaPago = fechaPago;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public MedioPago getMedio() {
-		return medio;
-	}
+    public void setContrato(Contrato contrato) {
+        this.contrato = contrato;
+    }
 
-	public void setMedio(MedioPago medio) {
-		this.medio = medio;
-	}
+    public void setConcepto(String concepto) {
+        this.concepto = concepto;
+    }
 
-	public BigDecimal getImportePagado() {
-		return importePagado;
-	}
+    public void setFechaEmision(LocalDate fechaEmision) {
+        this.fechaEmision = fechaEmision;
+    }
 
-	public void setImportePagado(BigDecimal importePagado) {
-		this.importePagado = importePagado;
-	}
+    public void setFechaVencimiento(LocalDate fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
 
-	public BigDecimal getInteres() {
-		return interes;
-	}
+    public void setImporte(BigDecimal importe) {
+        this.importe = importe;
+    }
 
-	public void setInteres(BigDecimal interes) {
-		this.interes = interes;
-	}
+    public void setEstado(EstadoFactura estado) {
+        this.estado = estado;
+    }
 
-	public String getConceptoFacturado() {
-		return conceptoFacturado;
-	}
+    public void setFechaPago(LocalDate fechaPago) {
+        this.fechaPago = fechaPago;
+    }
 
-	public void setConceptoFacturado(String conceptoFacturado) {
-		this.conceptoFacturado = conceptoFacturado;
-	}
+    public void setMedioPago(MedioPago medioPago) {
+        this.medioPago = medioPago;
+    }
 
-	public Contrato getContrato() {
-		return contrato;
-	}
+    public void setImportePagado(BigDecimal importePagado) {
+        this.importePagado = importePagado;
+    }
 
-	public void setContrato(Contrato contrato) {
-		this.contrato = contrato;
-	}
+    public void setInteresPagado(BigDecimal interesPagado) {
+        this.interesPagado = interesPagado;
+    }
 
-	
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
 }
