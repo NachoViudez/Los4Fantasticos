@@ -13,8 +13,9 @@ import tuti.desi.entidades.EstadoContrato;
 
 @Repository
 public interface ContratoRepo extends JpaRepository<Contrato, Long> {
+
 	boolean existsByPropiedadIdAndEstadoAndEliminadoFalse(Long idPropiedad, EstadoContrato estado);
-	
+
 	@Query("""
 		    SELECT c FROM Contrato c
 		    WHERE c.eliminado = false
@@ -28,7 +29,7 @@ public interface ContratoRepo extends JpaRepository<Contrato, Long> {
 			@Param("idInquilinoSeleccionado") Long idInquilinoSeleccionado,
 			@Param("estado") EstadoContrato estado,
 			@Param("fechaInicio") LocalDate fechaInicio);
-	
+
 	@Query("""
 		    SELECT c FROM Contrato c
 		    WHERE c.eliminado = false
@@ -38,7 +39,7 @@ public interface ContratoRepo extends JpaRepository<Contrato, Long> {
 	List<Contrato> findByPropiedadAndEstado(
 			@Param("idPropiedadSeleccionada") Long idPropiedadSeleccionada,
 			@Param("estado") EstadoContrato estado);
-	
+
 	@Query("""
 		    SELECT c FROM Contrato c
 		    WHERE c.eliminado = false

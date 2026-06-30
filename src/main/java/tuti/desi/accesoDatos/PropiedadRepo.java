@@ -27,11 +27,10 @@ public interface PropiedadRepo extends JpaRepository<Propiedad, Long> {
 			@Param("tipo") TipoPropiedad tipo,
 			@Param("estado") EstadoDisponibilidad estado);
 	
-	boolean existByDireccionAndCiudadIdAndEliminadoFalse(String direccion, Long idCiudad);
+	boolean existsByDireccionAndCiudadIdAndEliminadoFalse(String direccion, Long idCiudad);
 	
-	boolean existByDireccionAndCiudadIdAndIdNotAndEliminadoFalse(String direccion, Long idCiudad, Long id);
+	boolean existsByDireccionAndCiudadIdAndIdNotAndEliminadoFalse(String direccion, Long idCiudad, Long id);
 		
-
-
+	List<Propiedad> findByEliminadoFalse();
 	
 }
