@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Buscar Facturas</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+
+<body>
+
+    <div class="starter-template">
+        <h1>Los 4 Fantásticos</h1>
+        <h2>Buscar Facturas</h2>
+    </div>
+
+    <div th:if="${mensajeExito}" style="color: green; text-align: center;">
+        <p th:text="${mensajeExito}"></p>
+    </div>
+
+    <div th:if="${mensajeError}" style="color: red; text-align: center;">
+        <p th:text="${mensajeError}"></p>
+    </div>
+
+    <form th:action="@{/facturas}" method="get">
+
+        <table border="1" style="margin-left: auto; margin-right: auto; border-collapse: collapse;">
+            <tr>
+                <td><label>Contrato</label></td>
+                <td>
+                    <select name="contratoId">
+                        <option value="">Todos</option>
+                        <option th:each="contrato : ${contratos}"
+                                th:value="${contrato.id}"
+                                th:text="${contrato.descripcion}"
+                                th:selected="${contratoIdSeleccionado != null and contrato.id == contratoIdSeleccionado}">
+                        </option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Estado</label></td>
+                <td>
+                    <select name="estado">
+                        <option value="">Todos</option>
+                        <option th:each="estado : ${estados}"
+                                th:value="${estado}"
+                                th:text="${estado}"
+                                th:selected="${estadoSeleccionado != null and estado == estadoSeleccionado}">
+                        </option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Fecha vencimiento desde</label></td>
+                <td>
+                    <input type="date" name="fechaDesde" th:value="${fechaDesde}" />
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Fecha vencimiento hasta</label></td>
+                <td>
+                    <input type="date" name="fechaHasta" th:value="${fechaHasta}" />
+                </td>
+            </tr>
+        </table>
+
+        <table class="botones" style="margin-left: auto; margin-right: auto; margin-top: 20px; margin-bottom: 20px;">
+            <tr>
+                <td>
+                    <button type="submit" class="btn-primary">
+                        Buscar
+                    </button>
+                </td>
+
+                <td>
+                    <a th:href="@{/facturas}" class="btn-primary">
+                        Limpiar
+                    </a>
+                </td>
+
+                <td>
+                    <a th:href="@{/facturas/nueva}" class="btn-primary">
+                        Registrar factura
+                    </a>
+                </td>
+            </tr>
+        </table>
+
+    </form>
+
+    <table class="resultados" border="0" style="width: 95%; margin: 0 auto; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Contrato</th>
+                <th>Concepto</th>
+                <th>Fecha emisión</th>
+                <th>Fecha vencimiento</th>
+                <th>Importe</th>
+                <th>Estado</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="factura : ${facturas}">
+                <td th:text="${factura.id}"></td>
+                <td th:text="${factura.contrato.descripcion}"></td>
+                <td th:text="${factura.concepto}"></td>
+                <td th:text="${factura.fechaEmision}"></td>
+                <td th:text="${factura.fechaVencimiento}"></td>
+                <td th:text="${factura.importe}"></td>
+                <td th:text="${factura.estado}"></td>
+
+                <td>
+                    <a th:href="@{/facturas/editar/{id}(id=${factura.id})}"
+                       class="btn-primary">
+                        Editar
+                    </a>
+                </td>
+
+                <td>
+                    <a th:href="@{/facturas/eliminar/{id}(id=${factura.id})}"
+                       class="btn-primary"
+                       onclick="return confirm('¿Estás seguro que deseas eliminar esta factura?');">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(facturas)}">
+                <td colspan="9" style="text-align: center; padding: 15px;">
+                    No hay facturas registradas.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>
