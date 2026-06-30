@@ -19,6 +19,7 @@ import tuti.desi.excepciones.EntidadNoEncontradaException;
 import tuti.desi.excepciones.Excepcion;
 import tuti.desi.presentacion.contratos.ContratoForm;
 import tuti.desi.presentacion.contratos.ContratosBuscarForm;
+import java.math.BigDecimal;
 
 @Service
 public class ContratoServiceImpl implements ContratoService {
@@ -76,6 +77,13 @@ public class ContratoServiceImpl implements ContratoService {
 		} else {
 			contrato = buscarPorId(form.getId());
 			estadoAnterior = contrato.getEstado();
+		}
+		//validacion para que un contrato dno pueda volver de rescindido o finalizado a activo
+		if (estadoAnterior != null
+		        && (estadoAnterior == EstadoContrato.FINALIZADO
+		            || estadoAnterior == EstadoContrato.RESCINDIDO)
+		        && form.getEstado() == EstadoContrato.ACTIVO) {
+		    throw new Excepcion("No se puede cambiar un contrato finalizado o rescindido nuevamente a Activo.");
 		}
 		
 		validarContrato(form, propiedad);
@@ -144,6 +152,18 @@ public class ContratoServiceImpl implements ContratoService {
 					&& !repo.findOtroContratoByPropiedadAndEstado(form.getIdPropiedadSeleccionada(), EstadoContrato.ACTIVO, form.getId()).isEmpty()) {
 				throw new Excepcion("Existe otro contrato activo para la misma propiedad");
 			}
+		}
+		//validar numeros negativos
+		if (form.getDuracionMeses() != null && form.getDuracionMeses() <= 0) {
+		    throw new Excepcion("La duración del contrato debe ser mayor a 0.");
+		}
+
+		if (form.getImporteMensual() != null && form.getImporteMensual().compareTo(BigDecimal.ZERO) <= 0) {
+		    throw new Excepcion("El importe mensual debe ser mayor a 0.");
+		}
+
+		if (form.getDiaVencimientoMensual() != null && form.getDiaVencimientoMensual() <= 0) {
+		    throw new Excepcion("El día de vencimiento debe ser mayor a 0.");
 		}
 	}
 	

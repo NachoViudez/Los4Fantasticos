@@ -16,9 +16,14 @@
 	<form th:action="@{/contratoEditar}" th:object="${formBean}" method="post">
 		<p th:each="err : ${#fields.errors('global')}" th:text="${err}" class="error" />
 		<input type="hidden" id="id" th:field="*{id}">
-
+		
 		<table border="0" style="align-self: center;">
-			<tr>
+			<tr th:if="${formBean.id != null}">    < !--mostrar id como etiqueta -- >
+			    <td><label>ID Contrato</label></td>
+			    <td>
+			        <span th:text="${formBean.id}"></span>
+			    </td>
+			</tr>
 				<td><label>Propiedad</label></td>
 				<td>
 					<select th:field="*{idPropiedadSeleccionada}">

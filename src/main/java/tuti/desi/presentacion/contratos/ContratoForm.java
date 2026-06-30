@@ -3,12 +3,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import tuti.desi.entidades.EstadoContrato;
 import tuti.desi.entidades.Contrato;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class ContratoForm {
 	private Long id;
 	private Long idPropiedadSeleccionada;
 	private Long idInquilinoSeleccionado;
-	private LocalDate fechaInicio;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fechaInicio;
 	private Integer duracionMeses;
 	private BigDecimal importeMensual;
 	private Integer diaVencimientoMensual;
