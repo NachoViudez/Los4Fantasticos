@@ -99,7 +99,7 @@
 				<td><label th:text="#{propiedad.propietario}" /></td>
 				<td>
 					<select th:field="*{idPropietario}">
-						<option th:each="p : ${allPropietarios}" th:value="${p.id}" th:text="${p.nombre+''+p.apellido}">
+						<option th:each="p : ${allPropietarios}" th:value="${p.id}" th:text="${p.nombre+' '+p.apellido}">
 						</option>
 					</select>
 				</td>
